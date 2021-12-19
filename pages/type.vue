@@ -27,64 +27,10 @@ export default {
     return {
       headers: [
         {
-          text: 'Вид',
-          align: 'start',
-          sortable: false,
-          value: 'type',
-        },
-        {
-          text: '№',
+          text: 'ID',
           align: 'start',
           sortable: false,
           value: 'id',
-        },
-        {
-          text: 'Дата рег.',
-          align: 'start',
-          sortable: false,
-          value: 'dateReg',
-        },
-        {
-          text: 'Название',
-          align: 'start',
-          sortable: false,
-          value: 'name',
-        },
-        {
-          text: 'Автор',
-          align: 'start',
-          sortable: false,
-          value: 'author',
-        },
-        {
-          text: 'Исполнитель',
-          align: 'start',
-          sortable: false,
-          value: 'executor',
-        },
-        {
-          text: 'Дата исполнения',
-          align: 'start',
-          sortable: false,
-          value: 'dateDue',
-        },
-        {
-          text: 'Файлы',
-          align: 'start',
-          sortable: false,
-          value: 'files',
-        },
-        {
-          text: 'Описание',
-          align: 'start',
-          sortable: false,
-          value: 'description',
-        },
-        {
-          text: 'Контролер',
-          align: 'start',
-          sortable: false,
-          value: 'controller',
         }
       ],
       search: ''

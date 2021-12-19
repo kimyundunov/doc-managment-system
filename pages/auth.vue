@@ -2,11 +2,17 @@
   <div class="page--auth auth">
     <v-container class="auth__container">
       <v-row justify="center">
-        <FormReg />
+        <FormAuth />
       </v-row>
     </v-container>
   </div>
 </template>
+
+<script>
+export default {
+  layout: 'auth'
+}
+</script>
 
 <style lang="scss">
 .auth {

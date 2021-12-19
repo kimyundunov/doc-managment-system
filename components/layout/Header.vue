@@ -1,6 +1,6 @@
 <template>
   <header class="header">
-    <v-toolbar dark>
+    <v-toolbar dark class="px-8">
       <v-toolbar-title>
         <nuxt-link to="/" class="d-flex align-center">
           <v-icon>mdi-file-document</v-icon>
@@ -8,25 +8,7 @@
         </nuxt-link>
       </v-toolbar-title>
       <v-spacer />
-      <v-dialog
-        v-model="authModal"
-        width="400"
-      >
-        <template #activator="{ on, attrs }">
-          <v-btn
-            large
-            class="mr-2"
-            v-bind="attrs"
-            color="primary"
-            v-on="on"
-          >
-            Войти
-          </v-btn>
-        </template>
-
-        <form-auth />
-      </v-dialog>
-      <v-btn large color="primary">Зарегистрироваться</v-btn>
+      <layout-header-user />
     </v-toolbar>
   </header>
 </template>
@@ -36,6 +18,20 @@ export default {
   data() {
     return {
       authModal: false
+    }
+  },
+  computed: {
+    userMenu() {
+      return [
+        {
+          name: 'ЛК',
+          route: { name: 'user' }
+        },
+        {
+          name: 'Выход',
+          route: { name: 'auth' }
+        }
+      ]
     }
   }
 }

@@ -1,7 +1,10 @@
 <template>
   <v-app dark>
     <layout-header />
-    <nuxt />
+    <div class="d-flex" style="height: 100%">
+      <layout-header-navigation />
+      <nuxt style="width: 100%" />
+    </div>
   </v-app>
 </template>
 
