@@ -1,6 +1,6 @@
 <template>
   <div class="page--index">
-    <v-container>
+    <div  class="mx-2 my-2">
       <v-data-table
         :headers="headers"
         :items="items"
@@ -17,7 +17,7 @@
           ></v-text-field>
         </template>
       </v-data-table>
-    </v-container>
+    </div>
   </div>
 </template>
 

@@ -1,6 +1,6 @@
 <template>
   <div class="page--index">
-    <div class="mx-2 my-2">
+    <div  class="mx-2 my-2">
       <v-data-table
         :headers="headers"
         :items="items"
@@ -31,24 +31,20 @@ export default {
           align: 'start',
           sortable: false,
           value: 'id',
+          width: '10%'
         },
         {
-          text: 'Имя пользователя',
+          text: 'Название',
           align: 'start',
           sortable: false,
           value: 'name',
+          width: '15%'
         },
         {
-          text: 'Роль',
+          text: 'Описание',
           align: 'start',
           sortable: false,
-          value: 'role',
-        },
-        {
-          text: 'Дата регистрации',
-          align: 'start',
-          sortable: false,
-          value: 'dateReg',
+          value: 'description'
         }
       ],
       search: ''
@@ -59,28 +55,25 @@ export default {
       return [
         {
           id: 1,
-          dateReg: '17.09.2021',
-          name: 'Воронцов А.В.',
-          role: 'Исполнительный директор'
+          name: 'Официальная запись',
+          description: 'Документ, посредством которого осуществляется деловая переписка между заинтересованными сторонами по различным вопросам'
         },
         {
           id: 2,
-          dateReg: '17.09.2021',
-          name: 'Воронцов А.В.',
-          role: 'Исполнительный директор'
+          name: 'Служебная запись',
+          description: 'Записка о выполнении какой-либо работы, направляемая одним должностным лицом другому'
         },
         {
           id: 3,
-          dateReg: '17.09.2021',
-          name: 'Воронцов А.В.',
-          role: 'Исполнительный директор'
+          name: 'Докладная',
+          description: 'Документ направленный руководству или вышестоящему должностному лицу для административного рассмотрения'
         }
       ]
     }
   },
   methods: {
     onClickRow({ id }) {
-      this.$router.push({ name: 'user-id', params: { id } })
+      this.$router.push({ name: 'type-id', params: { id } })
     }
   }
 }

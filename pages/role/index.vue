@@ -1,6 +1,6 @@
 <template>
   <div class="page--index">
-    <div class="mx-2 my-2">
+    <div  class="mx-2 my-2">
       <v-data-table
         :headers="headers"
         :items="items"
@@ -15,6 +15,9 @@
             outlined
             hide-details
           ></v-text-field>
+        </template>
+        <template #item.permissions="{ value }">
+          <span>{{ value.join(', ') }}</span>
         </template>
       </v-data-table>
     </div>
@@ -31,24 +34,20 @@ export default {
           align: 'start',
           sortable: false,
           value: 'id',
+          width: '10%'
         },
         {
-          text: 'Имя пользователя',
+          text: 'Название',
           align: 'start',
           sortable: false,
           value: 'name',
+          width: '15%'
         },
         {
-          text: 'Роль',
+          text: 'Доступ',
           align: 'start',
           sortable: false,
-          value: 'role',
-        },
-        {
-          text: 'Дата регистрации',
-          align: 'start',
-          sortable: false,
-          value: 'dateReg',
+          value: 'permissions',
         }
       ],
       search: ''
@@ -59,28 +58,20 @@ export default {
       return [
         {
           id: 1,
-          dateReg: '17.09.2021',
-          name: 'Воронцов А.В.',
-          role: 'Исполнительный директор'
+          name: 'Полные права',
+          permissions: ['Главная', 'Права пользователя', 'Документы']
         },
         {
           id: 2,
-          dateReg: '17.09.2021',
-          name: 'Воронцов А.В.',
-          role: 'Исполнительный директор'
-        },
-        {
-          id: 3,
-          dateReg: '17.09.2021',
-          name: 'Воронцов А.В.',
-          role: 'Исполнительный директор'
+          name: 'Админ',
+          permissions: ['Главная', 'Права пользователя', 'Документы']
         }
       ]
     }
   },
   methods: {
     onClickRow({ id }) {
-      this.$router.push({ name: 'user-id', params: { id } })
+      this.$router.push({ name: 'role-id', params: { id } })
     }
   }
 }

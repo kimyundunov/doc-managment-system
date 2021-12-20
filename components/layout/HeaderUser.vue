@@ -2,7 +2,8 @@
   <v-menu offset-y>
     <template #activator="{ on, attrs }">
       <v-btn
-        icon
+        fab
+        small
         color="primary"
         v-bind="attrs"
         v-on="on"

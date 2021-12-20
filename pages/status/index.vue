@@ -1,6 +1,6 @@
 <template>
   <div class="page--index">
-    <div class="mx-2 my-2">
+    <div  class="mx-2 my-2">
       <v-data-table
         :headers="headers"
         :items="items"
@@ -31,24 +31,20 @@ export default {
           align: 'start',
           sortable: false,
           value: 'id',
+          width: '10%'
         },
         {
-          text: 'Имя пользователя',
+          text: 'Название',
           align: 'start',
           sortable: false,
           value: 'name',
+          width: '15%'
         },
         {
-          text: 'Роль',
+          text: 'Описание',
           align: 'start',
           sortable: false,
-          value: 'role',
-        },
-        {
-          text: 'Дата регистрации',
-          align: 'start',
-          sortable: false,
-          value: 'dateReg',
+          value: 'description',
         }
       ],
       search: ''
@@ -59,28 +55,30 @@ export default {
       return [
         {
           id: 1,
-          dateReg: '17.09.2021',
-          name: 'Воронцов А.В.',
-          role: 'Исполнительный директор'
+          name: 'Новый',
+          description: 'Документ создан пользователем'
         },
         {
           id: 2,
-          dateReg: '17.09.2021',
-          name: 'Воронцов А.В.',
-          role: 'Исполнительный директор'
+          name: 'Подписан',
+          description: 'Документ подписан подписью'
         },
         {
           id: 3,
-          dateReg: '17.09.2021',
-          name: 'Воронцов А.В.',
-          role: 'Исполнительный директор'
+          name: 'Отказано',
+          description: 'Документ отказан'
+        },
+        {
+          id: 4,
+          name: 'Принят',
+          description: 'Документ принят'
         }
       ]
     }
   },
   methods: {
     onClickRow({ id }) {
-      this.$router.push({ name: 'user-id', params: { id } })
+      this.$router.push({ name: 'status-id', params: { id } })
     }
   }
 }
