@@ -26,6 +26,19 @@
 
 <script>
 export default {
+  async asyncData({ store }) {
+    const items = await store.dispatch('fetchRoles')
+    return {
+      items: items.map(role => {
+        return {
+          ...role,
+          permissions: store.state.menu.filter(item => {
+            return JSON.parse(role.menu)[item.key]
+          }).map(v => v.name)
+        }
+      })
+    }
+  },
   data() {
     return {
       headers: [
@@ -51,22 +64,6 @@ export default {
         }
       ],
       search: ''
-    }
-  },
-  computed: {
-    items() {
-      return [
-        {
-          id: 1,
-          name: 'Полные права',
-          permissions: ['Главная', 'Права пользователя', 'Документы']
-        },
-        {
-          id: 2,
-          name: 'Админ',
-          permissions: ['Главная', 'Права пользователя', 'Документы']
-        }
-      ]
     }
   },
   methods: {

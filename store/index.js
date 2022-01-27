@@ -38,3 +38,62 @@ export const state = () => ({
     }
   ]
 })
+
+export const actions = {
+  // user
+  fetchUsers() {
+    return this.$axios
+      .$get('/api/user/list')
+  },
+  fetchUser(_, id) {
+    return this.$axios
+      .$get('/api/user', { params: { id }})
+  },
+  updateUser(_, payload) {
+    if (payload.id) {
+      return this.$axios
+        .$patch('/api/user', payload)
+    } else {
+      return this.$axios
+        .$post('/api/user', payload)
+    }
+  },
+
+  // role
+  fetchRoles() {
+    return this.$axios
+      .$get('/api/role/list')
+  },
+  fetchRole(_, id) {
+    return this.$axios
+      .$get('/api/role', { params: { id }})
+  },
+  updateRole(_, payload) {
+    if (payload.id) {
+      return this.$axios
+        .$patch('/api/role', payload)
+    } else {
+      return this.$axios
+        .$post('/api/role', payload)
+    }
+  },
+
+  // status
+  fetchStatuses() {
+    return this.$axios
+      .$get('/api/status/list')
+  },
+  fetchStatus(_, id) {
+    return this.$axios
+      .$get('/api/status', { params: { id }})
+  },
+  updateStatus(_, payload) {
+    if (payload.id) {
+      return this.$axios
+        .$patch('/api/status', payload)
+    } else {
+      return this.$axios
+        .$post('/api/status', payload)
+    }
+  }
+}

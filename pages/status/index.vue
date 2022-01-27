@@ -23,6 +23,10 @@
 
 <script>
 export default {
+  async asyncData({ store }) {
+    const items = await store.dispatch('fetchStatuses')
+    return { items }
+  },
   data() {
     return {
       headers: [
@@ -48,32 +52,6 @@ export default {
         }
       ],
       search: ''
-    }
-  },
-  computed: {
-    items() {
-      return [
-        {
-          id: 1,
-          name: 'Новый',
-          description: 'Документ создан пользователем'
-        },
-        {
-          id: 2,
-          name: 'Подписан',
-          description: 'Документ подписан подписью'
-        },
-        {
-          id: 3,
-          name: 'Отказано',
-          description: 'Документ отказан'
-        },
-        {
-          id: 4,
-          name: 'Принят',
-          description: 'Документ принят'
-        }
-      ]
     }
   },
   methods: {

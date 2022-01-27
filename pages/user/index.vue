@@ -16,6 +16,12 @@
             hide-details
           ></v-text-field>
         </template>
+        <template #item.roleId="{ value }">
+          <span>{{ roleList.find(v => v.id === value).name }}</span>
+        </template>
+        <template #item.createdAt="{ value }">
+          <span>{{ new Date(value) }}</span>
+        </template>
       </v-data-table>
     </div>
   </div>
@@ -23,6 +29,11 @@
 
 <script>
 export default {
+  async asyncData({ store }) {
+    const items = await store.dispatch('fetchUsers')
+    const roleList = await store.dispatch('fetchRoles')
+    return { items, roleList }
+  },
   data() {
     return {
       headers: [
@@ -42,40 +53,16 @@ export default {
           text: 'Роль',
           align: 'start',
           sortable: false,
-          value: 'role',
+          value: 'roleId',
         },
         {
           text: 'Дата регистрации',
           align: 'start',
           sortable: false,
-          value: 'dateReg',
+          value: 'createdAt',
         }
       ],
       search: ''
-    }
-  },
-  computed: {
-    items() {
-      return [
-        {
-          id: 1,
-          dateReg: '17.09.2021',
-          name: 'Воронцов А.В.',
-          role: 'Исполнительный директор'
-        },
-        {
-          id: 2,
-          dateReg: '17.09.2021',
-          name: 'Воронцов А.В.',
-          role: 'Исполнительный директор'
-        },
-        {
-          id: 3,
-          dateReg: '17.09.2021',
-          name: 'Воронцов А.В.',
-          role: 'Исполнительный директор'
-        }
-      ]
     }
   },
   methods: {

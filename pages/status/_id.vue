@@ -11,6 +11,7 @@
                 px-2
               >
                 <v-text-field
+                  v-model="form.name"
                   label="Название"
                 />
               </v-flex>
@@ -19,7 +20,8 @@
                 px-2
               >
                 <v-textarea
-                  label="Название"
+                  v-model="form.description"
+                  label="Описание"
                   outlined
                 />
               </v-flex>
@@ -31,6 +33,7 @@
           <v-btn
             color="primary"
             large
+            @click="submit"
           >
             Сохранить
           </v-btn>
@@ -42,10 +45,26 @@
 
 <script>
 export default {
-  asyncData({ route }) {
+  async asyncData({ route, store }) {
+    const edit = route.params.id !== 'add'
+    let form = {
+      name: '',
+      description: ''
+    }
+
+    if (edit) {
+      form = await store.dispatch('fetchStatus', route.params.id)
+    }
+
     return {
-      edit: route.params.id !== 'add',
-      form: {}
+      edit,
+      form
+    }
+  },
+  methods: {
+    async submit() {
+      await this.$store.dispatch('updateStatus', this.form)
+      this.$router.push({ name: 'status' })
     }
   }
 }

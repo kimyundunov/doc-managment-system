@@ -12,6 +12,7 @@
                 px-2
               >
                 <v-text-field
+                  v-model="form.name"
                   label="Имя пользователя"
                 />
               </v-flex>
@@ -21,6 +22,7 @@
                 px-2
               >
                 <v-text-field
+                  v-model="form.email"
                   label="Email"
                   type="email"
                 />
@@ -41,7 +43,11 @@
                 px-2
               >
                 <v-select
+                  v-model="form.roleId"
                   label="Роль"
+                  :items="roleList"
+                  item-text="name"
+                  item-value="id"
                 />
               </v-flex>
             </v-row>
@@ -59,6 +65,7 @@
           <v-btn
             color="primary"
             large
+            @click="submit"
           >
             Сохранить
           </v-btn>
@@ -72,12 +79,24 @@
 import generator from 'generate-password'
 
 export default {
-  asyncData({ route }) {
+  async asyncData({ route, store }) {
+    const edit = route.params.id !== 'add'
+    const roleList = await store.dispatch('fetchRoles')
+    let form = {
+      password: '',
+      name: '',
+      email: '',
+      roleId: undefined
+    }
+
+    if (edit) {
+      form = await store.dispatch('fetchUser', route.params.id)
+    }
+
     return {
-      edit: route.params.id !== 'add',
-      form: {
-        password: ''
-      }
+      edit,
+      form,
+      roleList
     }
   },
   methods: {
@@ -86,6 +105,10 @@ export default {
         length: 16,
         numbers: true
       })
+    },
+    async submit() {
+      await this.$store.dispatch('updateUser', this.form)
+      this.$router.push({ name: 'user' })
     }
   }
 }

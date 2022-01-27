@@ -11,6 +11,7 @@
                 px-2
               >
                 <v-text-field
+                  v-model="form.name"
                   label="Название"
                 />
               </v-flex>
@@ -35,6 +36,7 @@
           <v-btn
             color="primary"
             large
+            @click="submit"
           >
             Сохранить
           </v-btn>
@@ -48,22 +50,47 @@
 import { mapState } from 'vuex'
 
 export default {
-  asyncData({ route, store }) {
-    return {
-      edit: route.params.id !== 'add',
-      form: {
-        name: '',
-        menu: store.state.menu.reduce((acc, value) => {
-          acc[value.key] = true
-          return acc
-        }, {})
+  async asyncData({ route, store }) {
+    const edit = route.params.id !== 'add'
+    let form = {
+      name: '',
+      menu: store.state.menu.reduce((acc, value) => {
+        acc[value.key] = true
+        return acc
+      }, {})
+    }
+
+    if (edit) {
+      const role = await store.dispatch('fetchRole', route.params.id)
+      form = {
+        id: role.id,
+        name: role.name,
+        menu: JSON.parse(role.menu)
       }
+    }
+
+    return {
+      edit,
+      form
     }
   },
   computed: {
     ...mapState({
       menu: state => state.menu
     })
+  },
+  methods: {
+    async submit() {
+      const payload = {
+        id: this.edit ? this.$route.params.id : undefined,
+        name: this.form.name,
+        menu: JSON.stringify(this.form.menu)
+      }
+
+      await this.$store.dispatch('updateRole', payload)
+
+      this.$router.push({ name: 'role' })
+    }
   }
 }
 </script>
