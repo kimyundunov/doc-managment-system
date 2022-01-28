@@ -262,7 +262,7 @@ db.sequelize.authenticate()
 db.sequelize.sync({ alter: true })
 
 if (require.main === module) {
-  const port = process.env.PORT || 3000
+  const port = process.env.APP_PORT || 3000
   app.listen(port, () => {
     console.log(`API server listening on port ${port}`)
   })
