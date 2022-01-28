@@ -36,10 +36,20 @@ export const state = () => ({
       route: '/type',
       icon: 'mdi-text-box-check'
     }
-  ]
+  ],
+  user: undefined
 })
 
 export const actions = {
+  // auth
+  login({ commit }, payload) {
+    return this.$axios
+      .$post('/api/auth', payload)
+      .then((response) => {
+        commit('SET_USER', response)
+      })
+  },
+
   // user
   fetchUsers() {
     return this.$axios
@@ -97,3 +107,9 @@ export const actions = {
     }
   }
 }
+
+export const mutations = {
+  SET_USER(state, data) {
+    state.user = data
+  }
+} 

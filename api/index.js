@@ -12,6 +12,24 @@ app.get('/ping', (_, res) => {
   res.json({ success: true })
 })
 
+app.post('/auth', async (req, res) => {
+  const { email, password } = req.body
+
+  try {
+    const user = await userModel.findOne({
+      where: { email }
+    })
+
+    if (user.password === password) {
+      res.json(user)
+    } else {
+      res.status(403).send('Пароль не совпадает')
+    }
+  } catch (error) {
+    res.status(403).send('Пользователь не найден')
+  }
+})
+
 app.get('/user', async (req, res) => {
   const { id } = req.query
 

@@ -10,6 +10,11 @@
 
 <script>
 export default {
+  middleware({ store, redirect }) {
+    if (!store.state.user) {
+      redirect('/auth')
+    }
+  },
   data () {
     return {}
   }

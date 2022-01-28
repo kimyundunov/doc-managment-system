@@ -8,31 +8,30 @@
         v-bind="attrs"
         v-on="on"
       >
-        K
+        {{ user && user.name ? user.name[0] : 'U' }}
       </v-btn>
     </template>
     <v-list>
-      <v-list-item
-        v-for="(item, index) in userMenu"
-        :key="index"
-        @click="$router.push(item.route)"
-      >
-        <v-list-item-title> {{ item.name }} </v-list-item-title>
+      <v-list-item @click="logout">
+        <v-list-item-title> Выход </v-list-item-title>
       </v-list-item>
     </v-list>
   </v-menu>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   computed: {
-    userMenu() {
-      return [
-        {
-          name: 'Выход',
-          route: { name: 'auth' }
-        }
-      ]
+    ...mapState({
+      user: state => state.user
+    })
+  },
+  methods: {
+    logout() {
+      this.$store.commit('SET_USER', undefined)
+      this.$router.push('/auth')
     }
   }
 }
