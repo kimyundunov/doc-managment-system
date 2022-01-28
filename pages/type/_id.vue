@@ -24,13 +24,22 @@
                     outlined
                   />
                 </v-flex>
+                <v-flex
+                  xs12
+                  px-2
+                >
+                  <v-file-input
+                    v-model="form.file"
+                    accept=".doc,.docx"
+                  />
+                </v-flex>
               </v-row>
             </v-form>
           </v-flex>
           <v-divider vertical />
           <v-flex xs12 lg8 class="px-2 py-2">
             <iframe
-              src="https://docs.google.com/document/d/16LBUcTDRaXd2eob_wxKz12snml1xt1sZOCMH3F2-dis/edit"
+              src="https://docs.google.com/gview?url=http://localhost:3000/api/KP_Yundunov.docx&embedded=true"
               frameborder="0"
               height="780px"
               width="100%"
@@ -43,32 +52,26 @@
 </template>
 
 <script>
-import { formatDate } from '~/utils/helpers'
-
 export default {
-  asyncData({ route, app }) {
+  asyncData({ route }) {
     return {
       edit: route.params.id !== 'add',
-      showDateReg: false,
-      showDateExecute: false,
       form: {
-        dateReg: app.$moment().format('YYYY-MM-DD'),
-        dateExecute: undefined
-      },
-      file: 'https://docs.google.com/document/d/16LBUcTDRaXd2eob_wxKz12snml1xt1sZOCMH3F2-dis/edit'
-    }
-  },
-  computed: {
-    formDateRegFormatted() {
-      return formatDate(this.form.dateReg)
-    },
-    formDateExecuteFormatted() {
-      return formatDate(this.form.dateExecute)
+        name: '',
+        description: '',
+        file: []
+      }
     }
   },
   watch: {
-    file(v) {
-      console.log(v)
+    'form.file': {
+      async handler(file) {
+        if (file) {
+          const formData = new FormData()
+          formData.append("file", file)
+          await this.$store.dispatch('uploadFile', formData)
+        }
+      }
     }
   }
 }

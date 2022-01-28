@@ -8,13 +8,22 @@
         @click:row="onClickRow"
       >
         <template #top>
-          <v-text-field
-            v-model="search"
-            label="Поиск"
-            class="mx-3"
-            outlined
-            hide-details
-          ></v-text-field>
+          <div class="d-flex">
+            <v-text-field
+              v-model="search"
+              label="Поиск"
+              class="mx-3"
+              outlined
+              hide-details
+            ></v-text-field>
+            <v-btn
+              x-large
+              color="primary"
+              @click="$router.push({ name: 'user-id', params: { id: 'add' } })"
+            >
+              Создать
+            </v-btn>
+          </div>
         </template>
         <template #item.roleId="{ value }">
           <span>{{ roleList.find(v => v.id === value).name }}</span>

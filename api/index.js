@@ -1,9 +1,19 @@
+const path = require('path')
 const express = require('express')
 const cors = require('cors')
+const bodyParser = require('body-parser')
+const fileUpload = require('express-fileupload')
+
 const app = express()
 const db = require('./models')
+
+// Middleware
 app.use(express.json())
 app.use(cors())
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
+app.use(fileUpload())
+app.use(express.static(path.join(__dirname, '..', '/files')))
 
 // models
 const { user: userModel, role: roleModel, status: statusModel } = require('./models')
@@ -224,14 +234,18 @@ app.delete('/status', async (req, res) => {
   }
 })
 
-app.get('/status/list', async (_, res) => {
-  try {
-    const list = await statusModel.findAll()
+// YANDEX API
+app.post('/upload', (req, res) => {
+  const file = req.files.file
+  const uploadPath = path.join(__dirname, '..', '/files/' + file.name)
 
-    res.json(list)
-  } catch (error) {
-    
-  }res.status(403).send('error')
+  file.mv(uploadPath, function(err) {
+    if (err) {
+      return res.status(500).send(err)
+    }
+
+    res.send('/api/' + file.name)
+  })
 })
 
 module.exports = app

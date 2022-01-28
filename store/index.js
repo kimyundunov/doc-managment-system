@@ -105,6 +105,16 @@ export const actions = {
       return this.$axios
         .$post('/api/status', payload)
     }
+  },
+
+  // upload
+  uploadFile(_, formData) {
+    return this.$axios
+      .$post('/api/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
   }
 }
 
