@@ -58,7 +58,7 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    // baseURL: process.env.APP_HOST
+    baseURL: process.env.APP_HOST
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
@@ -85,7 +85,7 @@ export default {
   },
 
   server: {
-    // host: '0',
+    host: '0',
     port: 3000 // default: 3000
   }
 }
