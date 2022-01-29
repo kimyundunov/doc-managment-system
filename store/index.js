@@ -107,6 +107,35 @@ export const actions = {
     }
   },
 
+  // type
+  fetchTypes() {
+    return this.$axios
+      .$get('/api/type/list')
+  },
+  fetchType(_, id) {
+    return this.$axios
+      .$get('/api/type', { params: { id }})
+  },
+  updateType(_, payload) {
+    if (payload.id) {
+      return this.$axios
+        .$patch('/api/type', payload)
+    } else {
+      return this.$axios
+        .$post('/api/type', payload)
+    }
+  },
+
+  // doc
+  fetchDocs() {
+    return this.$axios
+      .$get('/api/doc/list')
+  },
+  fetchDoc(_, id) {
+    return this.$axios
+      .$get('/api/doc', { params: { id }})
+  },
+
   // upload
   uploadFile(_, formData) {
     return this.$axios

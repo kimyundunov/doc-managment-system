@@ -16,7 +16,13 @@ app.use(fileUpload())
 app.use(express.static(path.join(__dirname, '..', '/files')))
 
 // models
-const { user: userModel, role: roleModel, status: statusModel } = require('./models')
+const {
+  user: userModel,
+  role: roleModel,
+  status: statusModel,
+  type: typeModel,
+  doc: docModel
+} = require('./models')
 
 app.get('/ping', (_, res) => {
   res.json({ success: true })
@@ -232,6 +238,169 @@ app.delete('/status', async (req, res) => {
   } catch (error) {
     res.status(403).send('error')
   }
+})
+
+app.get('/status/list', async (_, res) => {
+  try {
+    const list = await statusModel.findAll()
+
+    res.json(list)
+  } catch (error) {
+    
+  }res.status(403).send('error')
+})
+
+// type
+app.get('/type', async (req, res) => {
+  const { id } = req.query
+
+  try {
+    const type = await typeModel.findOne({
+      where: { id }
+    })
+
+    res.json(type)
+  } catch (error) {
+    res.status(403).send('error')
+  }
+})
+
+app.post('/type', async (req, res) => {
+  const { name, description, url } = req.body
+
+  try {
+    await typeModel.create({
+      name,
+      description,
+      url
+    })
+
+    res.send('success')
+  } catch (error) {
+    res.status(403).send('error')
+  }
+})
+
+app.patch('/type', async (req, res) => {
+  const { name, description, id, url } = req.body
+
+  try {
+    await typeModel.update({
+      name,
+      description,
+      url
+    }, { where: { id }})
+
+    res.send('success')
+  } catch (error) {
+    res.status(403).send('error')
+  }
+})
+
+app.delete('/type', async (req, res) => {
+  const { id } = req.query
+
+  try {
+    await typeModel.destroy({ where: { id }})
+
+    res.send('success')
+  } catch (error) {
+    res.status(403).send('error')
+  }
+})
+
+app.get('/type/list', async (_, res) => {
+  try {
+    const list = await typeModel.findAll()
+
+    res.json(list)
+  } catch (error) {
+    
+  }res.status(403).send('error')
+})
+
+
+// doc
+app.get('/doc', async (req, res) => {
+  const { id } = req.query
+
+  try {
+    const doc = await docModel.findOne({
+      where: { id }
+    })
+
+    res.json(doc)
+  } catch (error) {
+    res.status(403).send('error')
+  }
+})
+
+app.post('/doc', async (req, res) => {
+  const { name, typeId, authorId, executorId, controllerId, dateReg, dateDue, url } = req.body
+
+  try {
+    await docModel.create({
+      name,
+      typeId,
+      authorId,
+      executorId,
+      controllerId,
+      dateReg,
+      dateDue,
+      url
+    })
+
+    res.send('success')
+  } catch (error) {
+    res.status(403).send('error')
+  }
+})
+
+app.patch('/doc', async (req, res) => {
+  const { id, name, typeId, authorId, executorId, controllerId, dateReg, dateDue, url } = req.body
+
+  try {
+    await docModel.update({
+      name,
+      typeId,
+      authorId,
+      executorId,
+      controllerId,
+      dateReg,
+      dateDue,
+      url
+    }, { where: { id }})
+
+    res.send('success')
+  } catch (error) {
+    res.status(403).send('error')
+  }
+})
+
+app.delete('/doc', async (req, res) => {
+  const { id } = req.query
+
+  try {
+    await docModel.destroy({ where: { id }})
+
+    res.send('success')
+  } catch (error) {
+    res.status(403).send('error')
+  }
+})
+
+app.get('/doc/list', async (_, res) => {
+  try {
+    const list = await docModel.findAll({
+      include: [
+        { model: typeModel }
+      ]
+    })
+
+    res.json(list)
+  } catch (error) {
+    
+  }res.status(403).send('error')
 })
 
 // YANDEX API

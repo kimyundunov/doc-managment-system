@@ -19,6 +19,10 @@ export default {
     ]
   },
 
+  env: {
+    APP_HOST: process.env.APP_HOST
+  },
+
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
     '~/assets/normalize.css'
@@ -53,7 +57,9 @@ export default {
   },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
+  axios: {
+    // baseURL: process.env.APP_HOST
+  },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
@@ -79,7 +85,7 @@ export default {
   },
 
   server: {
-    host: '0',
+    // host: '0',
     port: 3000 // default: 3000
   }
 }

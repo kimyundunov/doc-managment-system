@@ -25,6 +25,21 @@
             </v-btn>
           </div>
         </template>
+        <template #item.Type="{ value }">
+          <span>{{ value.name }}</span>
+        </template>
+        <template #item.authorId="{ value }">
+          <span>{{ userList.find(val => val.id === value).name }}</span>
+        </template>
+        <template #item.executorId="{ value }">
+          <span>{{ userList.find(val => val.id === value).name }}</span>
+        </template>
+        <template #item.url="{ value }">
+          <v-btn text x-small>Скачать</v-btn>
+        </template>
+        <template #item.controllerId="{ value }">
+          <span>{{ userList.find(val => val.id === value).name }}</span>
+        </template>
       </v-data-table>
     </div>
   </div>
@@ -32,6 +47,11 @@
 
 <script>
 export default {
+  async asyncData({ store }) {
+    const userList = await store.dispatch('fetchUsers')
+    const items = await store.dispatch('fetchDocs')
+    return { items, userList }
+  },
   data() {
     return {
       headers: [
@@ -39,7 +59,7 @@ export default {
           text: 'Вид',
           align: 'start',
           sortable: false,
-          value: 'type',
+          value: 'Type',
         },
         {
           text: '№',
@@ -63,13 +83,13 @@ export default {
           text: 'Автор',
           align: 'start',
           sortable: false,
-          value: 'author',
+          value: 'authorId',
         },
         {
           text: 'Исполнитель',
           align: 'start',
           sortable: false,
-          value: 'executor',
+          value: 'executorId',
         },
         {
           text: 'Дата исполнения',
@@ -78,67 +98,19 @@ export default {
           value: 'dateDue',
         },
         {
-          text: 'Файлы',
+          text: 'Файл',
           align: 'start',
           sortable: false,
-          value: 'files',
-        },
-        {
-          text: 'Описание',
-          align: 'start',
-          sortable: false,
-          value: 'description',
+          value: 'url',
         },
         {
           text: 'Контролер',
           align: 'start',
           sortable: false,
-          value: 'controller',
+          value: 'controllerId',
         }
       ],
       search: ''
-    }
-  },
-  computed: {
-    items() {
-      return [
-        {
-          type: 5,
-          id: 1,
-          dateReg: '17.09.2021',
-          name: 'Договор аренды имущества',
-          author: 'Захаров П.Ф.',
-          executor: 'Воронцов А.В.',
-          dateDue: '23.10.2021',
-          files: ['filename-1', 'filename-2'],
-          description: 'Подписать договор аренды имущества',
-          controller: 'Иванов И.А.'
-        },
-        {
-          type: 5,
-          id: 2,
-          dateReg: '17.09.2021',
-          name: 'Договор аренды имущества',
-          author: 'Захаров П.Ф.',
-          executor: 'Воронцов А.В.',
-          dateDue: '23.10.2021',
-          files: ['filename-1', 'filename-2'],
-          description: 'Подписать договор аренды имущества',
-          controller: 'Иванов И.А.'
-        },
-        {
-          type: 5,
-          id: 3,
-          dateReg: '17.09.2021',
-          name: 'Договор аренды имущества',
-          author: 'Захаров П.Ф.',
-          executor: 'Воронцов А.В.',
-          dateDue: '23.10.2021',
-          files: ['filename-1', 'filename-2'],
-          description: 'Подписать договор аренды имущества',
-          controller: 'Иванов И.А.'
-        }
-      ]
     }
   },
   methods: {

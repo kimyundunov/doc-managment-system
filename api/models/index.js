@@ -1,5 +1,5 @@
-const Sequelize = require('sequelize')
 const fs = require('fs')
+const Sequelize = require('sequelize')
 const files = fs.readdirSync(__dirname).map(filename => filename.slice(0, -3)).filter(filename => filename !== 'index')
 
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {

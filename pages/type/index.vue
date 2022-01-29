@@ -32,6 +32,10 @@
 
 <script>
 export default {
+  async asyncData({ store }) {
+    const items = await store.dispatch('fetchTypes')
+    return { items }
+  },
   data() {
     return {
       headers: [
@@ -57,27 +61,6 @@ export default {
         }
       ],
       search: ''
-    }
-  },
-  computed: {
-    items() {
-      return [
-        {
-          id: 1,
-          name: 'Официальная запись',
-          description: 'Документ, посредством которого осуществляется деловая переписка между заинтересованными сторонами по различным вопросам'
-        },
-        {
-          id: 2,
-          name: 'Служебная запись',
-          description: 'Записка о выполнении какой-либо работы, направляемая одним должностным лицом другому'
-        },
-        {
-          id: 3,
-          name: 'Докладная',
-          description: 'Документ направленный руководству или вышестоящему должностному лицу для административного рассмотрения'
-        }
-      ]
     }
   },
   methods: {

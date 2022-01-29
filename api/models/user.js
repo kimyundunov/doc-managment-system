@@ -14,6 +14,24 @@ module.exports = (sequelize, DataTypes) => {
       User.belongsTo(models.role, {
         foreignKey: 'roleId'
       })
+      User.hasMany(models.doc, {
+        foreignKey: {
+          name: 'authorId',
+          allowNull: false
+        }
+      })
+      User.hasMany(models.doc, {
+        foreignKey: {
+          name: 'executorId',
+          allowNull: false
+        }
+      })
+      User.hasMany(models.doc, {
+        foreignKey: {
+          name: 'controllerId',
+          allowNull: false
+        }
+      })
     }
   };
   User.init({

@@ -12,6 +12,7 @@
                   px-2
                 >
                   <v-text-field
+                    v-model="form.name"
                     label="Название"
                   />
                 </v-flex>
@@ -20,7 +21,11 @@
                   px-2
                 >
                   <v-select
+                    v-model="form.typeId"
                     label="Вид документа"
+                    :items="typeList"
+                    item-text="name"
+                    item-value="id"
                   />
                 </v-flex>
                 <v-flex
@@ -102,21 +107,12 @@
           </v-flex>
           <v-divider vertical />
           <v-flex xs12 lg8 class="px-2 py-2">
-            <v-tabs
-              fixed-tabs
-              dark
-            >
-              <v-tab>
-                file1
-              </v-tab>
-              <v-tab>file1</v-tab>
-            </v-tabs>
             <iframe
-              src="https://docs.google.com/document/d/16LBUcTDRaXd2eob_wxKz12snml1xt1sZOCMH3F2-dis/edit"
+              v-if="form.url"
+              :src="`https://docs.google.com/gview?url=http://89.108.76.104:3000${form.url}&embedded=true`"
               frameborder="0"
-              height="730px"
+              height="780px"
               width="100%"
-              class="mt-2"
             />
           </v-flex>
         </v-row>
@@ -129,16 +125,29 @@
 import { formatDate } from '~/utils/helpers'
 
 export default {
-  asyncData({ route, app }) {
+  async asyncData({ route, app, store }) {
+    const typeList = await store.dispatch('fetchTypes')
+    const edit = route.params.id !== 'add'
+    let form = {
+      name: '',
+      typeId: '',
+      authorId: '',
+      executorId: '',
+      controllerId: '',
+      dateReg: app.$moment().format('YYYY-MM-DD'),
+      dateExecute: undefined
+    }
+
+    if (edit) {
+      form = await store.dispatch('fetchDoc', route.params.id)
+    }
+
     return {
-      edit: route.params.id !== 'add',
+      edit,
       showDateReg: false,
       showDateExecute: false,
-      form: {
-        dateReg: app.$moment().format('YYYY-MM-DD'),
-        dateExecute: undefined
-      },
-      file: 'https://docs.google.com/document/d/16LBUcTDRaXd2eob_wxKz12snml1xt1sZOCMH3F2-dis/edit'
+      form,
+      typeList
     }
   },
   computed: {
