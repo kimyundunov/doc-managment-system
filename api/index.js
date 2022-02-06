@@ -3,6 +3,7 @@ const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const fileUpload = require('express-fileupload')
+const Sequelize = require('sequelize')
 
 const app = express()
 const db = require('./models')
@@ -23,6 +24,7 @@ const {
   type: typeModel,
   doc: docModel
 } = require('./models')
+const { default: doc } = require('./models/doc')
 
 app.get('/ping', (_, res) => {
   res.json({ success: true })
@@ -389,9 +391,22 @@ app.delete('/doc', async (req, res) => {
   }
 })
 
-app.get('/doc/list', async (_, res) => {
+app.get('/doc/list', async (req, res) => {
+  const id = req.query.id || null
+
   try {
-    const list = await docModel.findAll({
+    const list = id ? await docModel.findAll({
+      where: {
+        [Sequelize.Op.or]: [
+          { authorId: id },
+          { executorId: id },
+          { controllerId: id }
+        ]
+      },
+      include: [
+        { model: typeModel }
+      ]
+    }) : await docModel.findAll({
       include: [
         { model: typeModel }
       ]
@@ -399,8 +414,9 @@ app.get('/doc/list', async (_, res) => {
 
     res.json(list)
   } catch (error) {
-    
-  }res.status(403).send('error')
+    console.log(error)
+    res.status(403).send('error')
+  }
 })
 
 // YANDEX API

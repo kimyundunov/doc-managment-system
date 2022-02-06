@@ -117,7 +117,17 @@
                   <v-file-input
                     v-model="form.file"
                     accept=".doc,.docx"
+                    prepend-icon=""
+                    placeholder="Выберите файл"
                   />
+                </v-flex>
+                <v-flex
+                  xs12
+                  px-2
+                >
+                  <v-btn v-if="form.url" text @click="uploadFile">
+                    Скачать
+                  </v-btn>
                 </v-flex>
               </v-row>
             </v-form>
@@ -204,6 +214,13 @@ export default {
     async submit() {
       await this.$store.dispatch('updateDoc', this.form)
       this.$router.push({ name: 'doc' })
+    },
+    uploadFile() {
+      const link = document.createElement('a')
+      link.setAttribute('href', `http://89.108.76.104:3000${this.form.url}`)
+      link.setAttribute('download', true)
+      link.click()
+      return false
     }
   }
 }

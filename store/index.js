@@ -127,9 +127,9 @@ export const actions = {
   },
 
   // doc
-  fetchDocs() {
+  fetchDocs(_, id) {
     return this.$axios
-      .$get('/api/doc/list')
+      .$get('/api/doc/list', { params: { id }})
   },
   fetchDoc(_, id) {
     return this.$axios

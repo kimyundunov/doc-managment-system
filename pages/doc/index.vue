@@ -35,7 +35,7 @@
           <span>{{ userList.find(val => val.id === value).name }}</span>
         </template>
         <template #item.url="{ value }">
-          <v-btn text x-small>Скачать</v-btn>
+          <v-btn @click="uploadFile(value)" text x-small>Скачать</v-btn>
         </template>
         <template #item.controllerId="{ value }">
           <span>{{ userList.find(val => val.id === value).name }}</span>
@@ -116,6 +116,13 @@ export default {
   methods: {
     onClickRow({ id }) {
       this.$router.push({ name: 'doc-id', params: { id } })
+    },
+    uploadFile(url) {
+      const link = document.createElement('a')
+      link.setAttribute('href', `http://89.108.76.104:3000${url}`)
+      link.setAttribute('download', true)
+      link.click()
+      return false
     }
   }
 }
