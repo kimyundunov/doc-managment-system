@@ -135,6 +135,15 @@ export const actions = {
     return this.$axios
       .$get('/api/doc', { params: { id }})
   },
+  updateDoc(_, payload) {
+    if (payload.id) {
+      return this.$axios
+        .$patch('/api/doc', payload)
+    } else {
+      return this.$axios
+        .$post('/api/doc', payload)
+    }
+  },
 
   // upload
   uploadFile(_, formData) {

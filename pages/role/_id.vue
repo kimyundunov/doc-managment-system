@@ -65,7 +65,7 @@ export default {
       form = {
         id: role.id,
         name: role.name,
-        menu: JSON.parse(role.menu)
+        menu: role.menu ? JSON.parse(role.menu) : {}
       }
     }
 

@@ -33,7 +33,11 @@
                   px-2
                 >
                   <v-select
+                    v-model="form.executorId"
                     label="Исполнитель"
+                    :items="userList"
+                    item-text="name"
+                    item-value="id"
                   />
                 </v-flex>
                 <v-flex
@@ -41,7 +45,11 @@
                   px-2
                 >
                   <v-select
+                    v-model="form.controllerId"
                     label="Контролер"
+                    :items="userList"
+                    item-text="name"
+                    item-value="id"
                   />
                 </v-flex>
                 <v-flex
@@ -88,19 +96,28 @@
                     <template #activator="{ on, attrs }">
                       <v-text-field
                         v-model="formDateExecuteFormatted"
-                        label="Дата регистрации"
+                        label="Дата завершения"
                         readonly
                         v-bind="attrs"
                         v-on="on"
                       ></v-text-field>
                     </template>
                     <v-date-picker
-                      v-model="form.dateExecute"
+                      v-model="form.dateDue"
                       no-title
                       locale="RU"
                       @input="showDateExecute = false"
                     ></v-date-picker>
                   </v-menu>
+                </v-flex>
+                <v-flex
+                  xs12
+                  px-2
+                >
+                  <v-file-input
+                    v-model="form.file"
+                    accept=".doc,.docx"
+                  />
                 </v-flex>
               </v-row>
             </v-form>
@@ -117,6 +134,16 @@
           </v-flex>
         </v-row>
       </v-card-text>
+      <v-card-actions>
+          <v-spacer />
+          <v-btn
+            color="primary"
+            large
+            @click="submit"
+          >
+            Сохранить
+          </v-btn>
+        </v-card-actions>
     </v-card>
   </div>
 </template>
@@ -127,15 +154,17 @@ import { formatDate } from '~/utils/helpers'
 export default {
   async asyncData({ route, app, store }) {
     const typeList = await store.dispatch('fetchTypes')
+    const userList = await store.dispatch('fetchUsers')
     const edit = route.params.id !== 'add'
     let form = {
       name: '',
       typeId: '',
-      authorId: '',
+      authorId: store.state.user.id,
       executorId: '',
       controllerId: '',
       dateReg: app.$moment().format('YYYY-MM-DD'),
-      dateExecute: undefined
+      dateExecute: undefined,
+      url: ''
     }
 
     if (edit) {
@@ -147,7 +176,8 @@ export default {
       showDateReg: false,
       showDateExecute: false,
       form,
-      typeList
+      typeList,
+      userList
     }
   },
   computed: {
@@ -155,12 +185,25 @@ export default {
       return formatDate(this.form.dateReg)
     },
     formDateExecuteFormatted() {
-      return formatDate(this.form.dateExecute)
+      return formatDate(this.form.dateDue)
     }
   },
   watch: {
-    file(v) {
-      console.log(v)
+    'form.file': {
+      async handler(file) {
+        if (file) {
+          const formData = new FormData()
+          formData.append("file", file)
+          const url = await this.$store.dispatch('uploadFile', formData)
+          this.form.url = url
+        }
+      }
+    }
+  },
+  methods: {
+    async submit() {
+      await this.$store.dispatch('updateDoc', this.form)
+      this.$router.push({ name: 'doc' })
     }
   }
 }

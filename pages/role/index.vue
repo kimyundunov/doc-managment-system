@@ -42,7 +42,7 @@ export default {
         return {
           ...role,
           permissions: store.state.menu.filter(item => {
-            return JSON.parse(role.menu)[item.key]
+            return role.menu ? JSON.parse(role.menu)[item.key] : {}
           }).map(v => v.name)
         }
       })
