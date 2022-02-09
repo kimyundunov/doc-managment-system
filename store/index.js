@@ -37,16 +37,22 @@ export const state = () => ({
       icon: 'mdi-text-box-check'
     }
   ],
-  user: undefined
+  user: undefined,
+  permission: undefined
 })
 
 export const actions = {
   // auth
-  login({ commit }, payload) {
+  login({ commit, dispatch }, payload) {
     return this.$axios
       .$post('/api/auth', payload)
       .then((response) => {
         commit('SET_USER', response)
+        return dispatch('fetchRole', response.roleId)
+          .then(role => {
+            commit('SET_PERMISSION', JSON.parse(role.menu))
+            return true
+          })
       })
   },
 
@@ -159,5 +165,14 @@ export const actions = {
 export const mutations = {
   SET_USER(state, data) {
     state.user = data
+  },
+  SET_PERMISSION(state, data) {
+    state.permission = data
   }
 } 
+
+export const getters = {
+  getMenu(state) {
+    return state.menu.filter(({ key }) => !!state.permission[key])
+  }
+}

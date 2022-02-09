@@ -5,7 +5,8 @@ import cookie from 'cookie';
 export default ({ store, req }) => {
   createPersistedState({
     paths: [
-      'user'
+      'user',
+      'permission'
     ],
     storage: {
       getItem: (key) => {
