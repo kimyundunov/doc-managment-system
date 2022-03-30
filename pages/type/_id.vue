@@ -52,7 +52,7 @@
           <v-flex xs12 lg8 class="px-2 py-2">
             <iframe
               v-if="form.url"
-              :src="`https://docs.google.com/gview?url=http://89.108.76.104:3000${form.url}&embedded=true`"
+              :src="`https://docs.google.com/gview?url=http://194.58.100.152:3000${form.url}&embedded=true`"
               frameborder="0"
               height="780px"
               width="100%"
@@ -112,7 +112,7 @@ export default {
     },
     uploadFile() {
       const link = document.createElement('a')
-      link.setAttribute('href', `http://89.108.76.104:3000${this.form.url}`)
+      link.setAttribute('href', `http://194.58.100.152:3000${this.form.url}`)
       link.setAttribute('download', true)
       link.click()
       return false
